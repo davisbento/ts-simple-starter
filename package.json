@@ -1,0 +1,10 @@
+{
+  "name": "ts-simple-starter",
+  "version": "1.0.0",
+  "bin": {
+    "ts-simple-starter": "./index.js"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3"
+  }
+}
