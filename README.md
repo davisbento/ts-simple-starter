@@ -4,3 +4,9 @@
 2. Eslint + Prettier
 3. Jest
 4. Path Aliases
+
+### Running
+
+```
+npx ts-simple-starter my-app
+```
