@@ -21,6 +21,7 @@
     "ts-simple-starter": "./index.js"
   },
   "dependencies": {
+    "chalk": "^4.1.2",
     "cross-spawn": "^7.0.3"
   }
 }
