@@ -1,6 +1,6 @@
 {
   "name": "ts-simple-starter",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A simple starter for TypeScript projects",
   "author": "Davi S. Bento <contato@davisbento.dev>",
   "main": "index.js",
