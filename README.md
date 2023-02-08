@@ -5,8 +5,11 @@
 3. Jest
 4. Path Aliases
 
-### Running
+### Getting started
 
 ```
 npx ts-simple-starter my-app
 ```
+
+### Path aliases
+You can simple import everything that is inside ```src/``` or ```tests/``` just using ```import anything from '@src/any-folder'```
