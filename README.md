@@ -12,4 +12,4 @@ npx ts-simple-starter my-app
 ```
 
 ### Path aliases
-You can simple import everything that is inside ```src/``` or ```tests/``` just using ```import anything from '@src/any-folder'```
+You can simple import everything that is inside ```src/``` or ```tests/``` just using ```import anything from '@/any-folder'``` or ```import tests from '@/tests/any-folder'```
