@@ -34,6 +34,13 @@ fs.mkdirSync(projectDir, { recursive: true });
 const templateDir = path.resolve(__dirname, 'template');
 fs.cpSync(templateDir, projectDir, { recursive: true });
 
+// It is good practice to have dotfiles stored in the
+// template without the dot (so they do not get picked
+// up by the starter template repository). We can rename
+// the dotfiles after we have copied them over to the
+// new project directory.
+fs.renameSync(path.join(projectDir, 'gitignore'), path.join(projectDir, '.gitignore'));
+
 const projectPackageJson = require(path.join(projectDir, 'package.json'));
 
 // Update the project's package.json with the new project name
