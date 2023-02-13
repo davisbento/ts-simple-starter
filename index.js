@@ -20,9 +20,31 @@ if (!projectName) {
 	process.exit(1);
 }
 
+if (projectName.includes('--version') || projectName.includes('-v')) {
+	console.log(require('./package.json').version);
+	process.exit(1);
+}
+
+if (projectName.includes('--help') || projectName.includes('-h')) {
+	console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
+	console.log();
+	console.log('For example:');
+	console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
+	console.log();
+	process.exit(1);
+}
+
+if (projectName.includes('--') || projectName.includes('-')) {
+	console.log(`Invalid project name: "${projectName}"`);
+	console.log('Project name cannot include special characters or spaces.');
+	console.log('Please use a different project name.');
+	console.log();
+	process.exit(1);
+}
+
 // Create a project directory with the project name.
 const currentDir = process.cwd();
-const projectDir = path.resolve(currentDir, projectName);
+const projectDir = path.resolve(currentDir, projectName.trim());
 
 console.log(`Creating a new project in ${chalk.green(projectDir)}`);
 
