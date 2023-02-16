@@ -5,7 +5,7 @@
     "prettier"
   ],
   "extends": [
-    "prettier/@typescript-eslint",
+    "prettier",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
@@ -74,10 +74,6 @@
     ],
     "object-shorthand": [
       "error"
-    ],
-    "semi": [
-      "error",
-      "always"
     ],
     "@typescript-eslint/no-unused-vars": [
       "warn"

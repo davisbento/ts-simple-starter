@@ -20,12 +20,16 @@ if (!projectName) {
 	process.exit(1);
 }
 
-if (projectName.includes('--version') || projectName.includes('-v')) {
+const isVersion = projectName.split(' ').includes('--version') || projectName.split(' ').includes('-v');
+
+if (isVersion) {
 	console.log(require('./package.json').version);
 	process.exit(1);
 }
 
-if (projectName.includes('--help') || projectName.includes('-h')) {
+const isHelp = projectName.split(' ').includes('--help') || projectName.split(' ').includes('-h');
+
+if (isHelp) {
 	console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
 	console.log();
 	console.log('For example:');
@@ -34,8 +38,15 @@ if (projectName.includes('--help') || projectName.includes('-h')) {
 	process.exit(1);
 }
 
-if (projectName.includes('--') || projectName.includes('-')) {
-	console.log(`Invalid project name: "${projectName}"`);
+const startWithDot = projectName.startsWith('.');
+const startWithSlash = projectName.startsWith('/');
+const startWithTilde = projectName.startsWith('~');
+const startWithHyphen = projectName.startsWith('-');
+
+const isInvalidProjectName = startWithDot || startWithSlash || startWithTilde || startWithHyphen;
+
+if (isInvalidProjectName) {
+	console.log(`Invalid project name: ${chalk.red(projectName)}`);
 	console.log('Project name cannot include special characters or spaces.');
 	console.log('Please use a different project name.');
 	console.log();

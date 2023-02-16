@@ -6,4 +6,4 @@ export const mockedData = {
     city: 'New York',
     state: 'NY',
   },
-}
+};
