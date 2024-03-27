@@ -18,42 +18,14 @@ const questions = [
 	}
 ];
 
-// Prompt the user with the defined questions
-inquirer
-	.prompt(questions)
-	.then((answers) => {
-		const templatePath = getTemplatePathFromAnswers(answers);
-		generateProject(templatePath);
-	})
-	.catch((error) => {
-		console.error('Error occurred:', error);
-	});
+const currentPath = process.cwd();
 
 const generateProject = async (templatePath) => {
-	// The first argument will be the project name.
 	const projectName = process.argv[2];
 
 	if (!projectName) {
 		console.error('Please specify the project directory:');
 		console.log(`  npx ts-simple-starter ${chalk.green('<project-directory>')}`);
-		console.log();
-		console.log('For example:');
-		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
-		console.log();
-		process.exit(1);
-	}
-
-	const isVersion = projectName.split(' ').includes('--version') || projectName.split(' ').includes('-v');
-
-	if (isVersion) {
-		console.log(require('./package.json').version);
-		process.exit(1);
-	}
-
-	const isHelp = projectName.split(' ').includes('--help') || projectName.split(' ').includes('-h');
-
-	if (isHelp) {
-		console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
 		console.log();
 		console.log('For example:');
 		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
@@ -84,7 +56,6 @@ const generateProject = async (templatePath) => {
 
 	fs.mkdirSync(projectDir, { recursive: true });
 
-	const currentPath = process.cwd();
 	const templateDir = path.resolve(currentPath, templatePath);
 	fs.cpSync(templateDir, projectDir, { recursive: true });
 
@@ -122,3 +93,36 @@ const getTemplatePathFromAnswers = (answers) => {
 			return 'template-pure-ts';
 	}
 };
+
+const main = async () => {
+	const args = process.argv.slice(2);
+
+	if (args.includes('--version') || args.includes('-v')) {
+		// read without require to avoid caching
+		const packageJson = fs.readFileSync(path.resolve(currentPath, 'package.json'), 'utf8');
+		console.log(JSON.parse(packageJson).version);
+		process.exit(1);
+	}
+
+	if (args.includes('--help') || args.includes('-h')) {
+		console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
+		console.log();
+		console.log('For example:');
+		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
+		console.log();
+		process.exit(1);
+	}
+
+	// Prompt the user with the defined questions
+	inquirer
+		.prompt(questions)
+		.then((answers) => {
+			const templatePath = getTemplatePathFromAnswers(answers);
+			generateProject(templatePath);
+		})
+		.catch((error) => {
+			console.error('Error occurred:', error);
+		});
+};
+
+main();
