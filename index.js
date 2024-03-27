@@ -2,94 +2,123 @@
 
 // Usage: npx ts-simple-starter my-app
 
-const spawn = require('cross-spawn');
-const chalk = require('chalk');
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-// The first argument will be the project name.
-const projectName = process.argv[2];
+import spawn from 'cross-spawn';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
 
-if (!projectName) {
-	console.error('Please specify the project directory:');
-	console.log(`  npx ts-simple-starter ${chalk.green('<project-directory>')}`);
-	console.log();
-	console.log('For example:');
-	console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
-	console.log();
-	process.exit(1);
-}
+const questions = [
+	{
+		type: 'list',
+		name: 'template',
+		message: 'Which template would you like to use?',
+		choices: ['Pure TS', 'Express']
+	}
+];
 
-const isVersion = projectName.split(' ').includes('--version') || projectName.split(' ').includes('-v');
+// Prompt the user with the defined questions
+inquirer
+	.prompt(questions)
+	.then((answers) => {
+		const templatePath = getTemplatePathFromAnswers(answers);
+		generateProject(templatePath);
+	})
+	.catch((error) => {
+		console.error('Error occurred:', error);
+	});
 
-if (isVersion) {
-	console.log(require('./package.json').version);
-	process.exit(1);
-}
+const generateProject = async (templatePath) => {
+	// The first argument will be the project name.
+	const projectName = process.argv[2];
 
-const isHelp = projectName.split(' ').includes('--help') || projectName.split(' ').includes('-h');
+	if (!projectName) {
+		console.error('Please specify the project directory:');
+		console.log(`  npx ts-simple-starter ${chalk.green('<project-directory>')}`);
+		console.log();
+		console.log('For example:');
+		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
+		console.log();
+		process.exit(1);
+	}
 
-if (isHelp) {
-	console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
-	console.log();
-	console.log('For example:');
-	console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
-	console.log();
-	process.exit(1);
-}
+	const isVersion = projectName.split(' ').includes('--version') || projectName.split(' ').includes('-v');
 
-const startWithDot = projectName.startsWith('.');
-const startWithSlash = projectName.startsWith('/');
-const startWithTilde = projectName.startsWith('~');
-const startWithHyphen = projectName.startsWith('-');
+	if (isVersion) {
+		console.log(require('./package.json').version);
+		process.exit(1);
+	}
 
-const isInvalidProjectName = startWithDot || startWithSlash || startWithTilde || startWithHyphen;
+	const isHelp = projectName.split(' ').includes('--help') || projectName.split(' ').includes('-h');
 
-if (isInvalidProjectName) {
-	console.log(`Invalid project name: ${chalk.red(projectName)}`);
-	console.log('Project name cannot include special characters or spaces.');
-	console.log('Please use a different project name.');
-	console.log();
-	process.exit(1);
-}
+	if (isHelp) {
+		console.log(`Usage: npx ts-simple-starter ${chalk.green('<project-directory>')}`);
+		console.log();
+		console.log('For example:');
+		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
+		console.log();
+		process.exit(1);
+	}
 
-// Create a project directory with the project name.
-const currentDir = process.cwd();
-const projectDir = path.resolve(currentDir, projectName.trim());
+	const startWithDot = projectName.startsWith('.');
+	const startWithSlash = projectName.startsWith('/');
+	const startWithTilde = projectName.startsWith('~');
+	const startWithHyphen = projectName.startsWith('-');
 
-console.log(`Creating a new project in ${chalk.green(projectDir)}`);
+	const isInvalidProjectName = startWithDot || startWithSlash || startWithTilde || startWithHyphen;
 
-fs.mkdirSync(projectDir, { recursive: true });
+	if (isInvalidProjectName) {
+		console.log(`Invalid project name: ${chalk.red(projectName)}`);
+		console.log('Project name cannot include special characters or spaces.');
+		console.log('Please use a different project name.');
+		console.log();
+		process.exit(1);
+	}
 
-// A common approach to building a starter template is to
-// create a `template` folder which will house the template
-// and the files we want to create.
-const templateDir = path.resolve(__dirname, 'template');
-fs.cpSync(templateDir, projectDir, { recursive: true });
+	// Create a project directory with the project name.
+	const currentDir = process.cwd();
+	const projectDir = path.resolve(currentDir, projectName.trim());
 
-// It is good practice to have dotfiles stored in the
-// template without the dot (so they do not get picked
-// up by the starter template repository). We can rename
-// the dotfiles after we have copied them over to the
-// new project directory.
-fs.renameSync(path.join(projectDir, 'gitignore'), path.join(projectDir, '.gitignore'));
+	console.log(`Creating a new project in ${chalk.green(projectDir)}`);
 
-const projectPackageJson = require(path.join(projectDir, 'package.json'));
+	fs.mkdirSync(projectDir, { recursive: true });
 
-// Update the project's package.json with the new project name
-projectPackageJson.name = projectName;
+	const currentPath = process.cwd();
+	const templateDir = path.resolve(currentPath, templatePath);
+	fs.cpSync(templateDir, projectDir, { recursive: true });
 
-fs.writeFileSync(path.join(projectDir, 'package.json'), JSON.stringify(projectPackageJson, null, 2));
+	// read the project's package.json without require
+	const projectPackageJson = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), 'utf8'));
 
-// Run `npm install` in the project directory to install
-// the dependencies. We are using a third-party library
-// called `cross-spawn` for cross-platform support.
-// (Node has issues spawning child processes in Windows).
-// enter the project directory
-process.chdir(projectDir);
-// emoji package is used to display emojis in the console.
-console.log(`${chalk.green('Installing packages... 📦')}`);
+	// Update the project's package.json with the new project name
+	projectPackageJson.name = projectName;
 
-spawn.sync('npm', ['install'], { stdio: 'inherit' });
+	fs.writeFileSync(path.join(projectDir, 'package.json'), JSON.stringify(projectPackageJson, null, 2));
 
-console.log(`${chalk.green('Success!')} Your new project is ready. 🚀`);
+	// Run `npm install` in the project directory to install
+	// the dependencies. We are using a third-party library
+	// called `cross-spawn` for cross-platform support.
+	// (Node has issues spawning child processes in Windows).
+	// enter the project directory
+	process.chdir(projectDir);
+	// emoji package is used to display emojis in the console.
+	console.log(`${chalk.green('Installing packages... 📦')}`);
+
+	spawn.sync('npm', ['install'], { stdio: 'inherit' });
+
+	console.log(`${chalk.green('Success!')} Your new project is ready. 🚀`);
+};
+
+const getTemplatePathFromAnswers = (answers) => {
+	const { template } = answers;
+
+	switch (template) {
+		case 'Pure TS':
+			return 'template-pure-ts';
+		case 'Express':
+			return 'template-express';
+		default:
+			return 'template-pure-ts';
+	}
+};

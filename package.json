@@ -9,6 +9,7 @@
     "type": "git",
     "url": "https://github.com/davisbento/ts-simple-starter.git"
   },
+  "type": "module",
   "license": "MIT",
   "keywords": [
     "typescript",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "chalk": "^5.3.0",
-    "cross-spawn": "^7.0.3"
+    "cross-spawn": "^7.0.3",
+    "inquirer": "^9.2.16"
   }
 }
