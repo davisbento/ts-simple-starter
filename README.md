@@ -25,11 +25,23 @@ cd my-app
 npm run dev
 ```
 
-### Running tests
+### Running tests in the project folder
 
 ```
 npm run test
 ```
+
+## How to contribute
+
+1. Fork the project
+2. Clone your forked repo locally
+3. Create a new branch in your own forked repo with a brief name like `feat/feature-name`
+4. `npm run install` to install the packages
+5. Make changes in the `index.js` file, that's the main entrypoint
+6. If you want to create a new template, create under the root folder, just like `template/`
+7. Add the new template to the `index.js` entrypoint -> `getTemplatePathFromAnswers()` function
+8. Run `node . my-app` to run the entrypoint with the new code you just wrote
+9. Create the PR from your fork to the main repo
 
 ## Path aliases
 

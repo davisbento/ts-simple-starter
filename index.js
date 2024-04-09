@@ -84,6 +84,7 @@ const generateProject = async (templatePath) => {
 const getTemplatePathFromAnswers = (answers) => {
 	const { template } = answers;
 
+	// this is the path to the templates folder
 	switch (template) {
 		case 'Pure TS':
 			return 'template-pure-ts';
