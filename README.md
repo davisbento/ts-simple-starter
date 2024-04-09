@@ -8,6 +8,11 @@ Basic configuration includes:
 2. Eslint + Prettier
 3. Jest
 4. Path Aliases
+5. Choose the template you want
+
+For now we have 2 templates:
+1. Pure TS
+2. Express with TS
 
 #### Get Started Immediately
 
@@ -31,6 +36,10 @@ npm run dev
 npm run test
 ```
 
+## Path aliases
+
+You can simple import everything that is inside `src/` or `tests/` just using `import anything from '@/any-folder'` or `import tests from '@/tests/any-folder'`
+
 ## How to contribute
 
 1. Fork the project
@@ -42,7 +51,3 @@ npm run test
 7. Add the new template to the `index.js` entrypoint -> `getTemplatePathFromAnswers()` function
 8. Run `node . my-app` to run the entrypoint with the new code you just wrote
 9. Create the PR from your fork to the main repo
-
-## Path aliases
-
-You can simple import everything that is inside `src/` or `tests/` just using `import anything from '@/any-folder'` or `import tests from '@/tests/any-folder'`
