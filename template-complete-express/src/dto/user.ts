@@ -10,3 +10,7 @@ export type LoginResponse = {
 export type JWTPayload = {
   userId: number;
 };
+
+export type JWTResponse = {
+  sub: number;
+};

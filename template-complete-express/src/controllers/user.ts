@@ -1,8 +1,20 @@
+import { createAuthenticatedInterface } from '@/libs/express-request';
+import { authMiddleware } from '@/middlewares/authMiddleware';
 import { loginUserService, registerUserService } from '@/services/user';
 import { NextFunction, Request, Response, Router } from 'express';
 
 const getUserController = (req: Request, res: Response) => {
   res.send('Hello World from user!');
+};
+
+const getAuthenticatedRoute = (req: Request, res: Response) => {
+  const reqAuth = createAuthenticatedInterface(req);
+  const { user } = reqAuth;
+
+  res.json({
+    message: 'Authenticated',
+    user,
+  });
 };
 
 const getLoginController = async (
@@ -37,6 +49,7 @@ const getRegisterController = async (
 
 export const buildUserController = (router: Router) => {
   router.get('/', getUserController);
+  router.get('/authenticated', authMiddleware, getAuthenticatedRoute);
   router.post('/login', getLoginController);
   router.post('/register', getRegisterController);
 

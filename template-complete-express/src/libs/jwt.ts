@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { JWTPayload } from '@/dto/user';
+import { JWTPayload, JWTResponse } from '@/dto/user';
 import jwt from 'jsonwebtoken';
 
 export const generateToken = (payload: JWTPayload) => {
@@ -13,5 +13,9 @@ export const generateToken = (payload: JWTPayload) => {
 };
 
 export const verifyToken = (token: string) => {
-  return jwt.verify(token, constants.jwtSecret);
+  const decoded = jwt.verify(token, constants.jwtSecret);
+
+  return {
+    sub: (decoded as any).sub,
+  } as JWTResponse;
 };

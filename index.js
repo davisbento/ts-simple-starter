@@ -14,7 +14,11 @@ const questions = [
 		type: 'list',
 		name: 'template',
 		message: 'Which template would you like to use?',
-		choices: ['Pure TS', 'Express']
+		choices: [
+			'Pure TS',
+			'Express',
+			'Complete Express (Express, Prisma, Docker, Docker Compose, Postgres, JWT + Auth Flow)'
+		]
 	}
 ];
 

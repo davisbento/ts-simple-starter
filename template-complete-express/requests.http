@@ -3,8 +3,9 @@
 GET {{host}}/
 
 ###
+# @name login
 POST {{host}}/user/login
-content-type: application/json
+Content-type: application/json
 
 {
     "email": "test@test.com",
@@ -13,9 +14,18 @@ content-type: application/json
 
 ###
 POST {{host}}/user/register
-content-type: application/json
+Content-type: application/json
 
 {
     "email": "test1@test.com",
     "password": "test123"
 }
+
+
+@authToken = {{login.response.body.token}}
+
+###
+GET {{host}}/user/authenticated
+Content-type: application/json
+Authorization: Bearer {{authToken}}
+
