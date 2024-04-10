@@ -1,0 +1,99 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 10,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "max-depth": [
+      "warn",
+      3
+    ],
+    "no-restricted-imports": [
+      "error"
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "max-lines": [
+      "error",
+      900
+    ],
+    "max-len": [
+      "error",
+      140,
+      2,
+      {
+        "ignorePattern": "^(import|export)",
+        "ignoreUrls": true
+      }
+    ],
+    "constructor-super": [
+      1
+    ],
+    "no-return-await": [
+      "error"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
+    "no-trailing-spaces": [
+      "error"
+    ],
+    "no-extra-semi": [
+      "error"
+    ],
+    "no-var": [
+      "error"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "quote-props": [
+      "warn",
+      "as-needed"
+    ],
+    "object-shorthand": [
+      "error"
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/adjacent-overload-signatures": [
+      "error"
+    ],
+    "@typescript-eslint/member-ordering": [
+      "error"
+    ],
+    "@typescript-eslint/no-namespace": [
+      "error"
+    ],
+    "@typescript-eslint/no-require-imports": [
+      "error"
+    ]
+  }
+}

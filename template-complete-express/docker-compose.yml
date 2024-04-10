@@ -1,0 +1,49 @@
+version: '3.5'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    environment:
+      - DATABASE_URL=postgresql://postgres:123@db:5432/postgres?sslmode=disable
+      - NODE_ENV=development
+      - TZ=GMT
+      - JWT_SECRET=secret
+
+    ports:
+      - '8080:8080'
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    links:
+      - db
+
+    volumes:
+      - /app/node_modules
+      - .:/app
+
+  db:
+    image: postgres:alpine
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.55'
+          memory: '420MB'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}']
+      timeout: 10s
+      interval: 10s
+      retries: 2
