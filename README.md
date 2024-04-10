@@ -10,9 +10,11 @@ Basic configuration includes:
 4. Path Aliases
 5. Choose the template you want
 
-For now we have 2 templates:
+For now we have 3 templates:
+
 1. Pure TS
 2. Express with TS
+3. Complete Express (Express, Prisma, Docker, Docker Compose, Postgres, JWT + Auth Flow)
 
 #### Get Started Immediately
 
