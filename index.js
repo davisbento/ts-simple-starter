@@ -9,16 +9,18 @@ import spawn from 'cross-spawn';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 
+const templateQuestion = {
+	'pure-ts': 'Pure TS',
+	express: 'Express',
+	'complete-express': 'Complete Express (Express, Prisma, Docker, Docker Compose, Postgres, JWT + Auth Flow)'
+};
+
 const questions = [
 	{
 		type: 'list',
 		name: 'template',
 		message: 'Which template would you like to use?',
-		choices: [
-			'Pure TS',
-			'Express',
-			'Complete Express (Express, Prisma, Docker, Docker Compose, Postgres, JWT + Auth Flow)'
-		]
+		choices: [templateQuestion['pure-ts'], templateQuestion['express'], templateQuestion['complete-express']]
 	}
 ];
 
@@ -90,10 +92,12 @@ const getTemplatePathFromAnswers = (answers) => {
 
 	// this is the path to the templates folder
 	switch (template) {
-		case 'Pure TS':
+		case templateQuestion['pure-ts']:
 			return 'template-pure-ts';
-		case 'Express':
+		case templateQuestion['express']:
 			return 'template-express';
+		case templateQuestion['complete-express']:
+			return 'template-complete-express';
 		default:
 			return 'template-pure-ts';
 	}
