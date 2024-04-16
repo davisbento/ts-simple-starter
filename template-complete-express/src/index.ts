@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { buildUserController } from './controllers/user';
 import { prismaClient } from './libs/prisma';
-import { ErrorMiddleware } from './middlewares/errorMiddleware';
+import { errorMiddleware } from './middlewares/error-middleware';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', buildUserController(router));
 
-app.use(ErrorMiddleware);
+app.use(errorMiddleware);
 
 app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);

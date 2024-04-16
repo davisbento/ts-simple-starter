@@ -1,4 +1,4 @@
-import HttpException from '@/interfaces/httpException';
+import HttpException from '@/exceptions/http-exception';
 
 class UnprocessableEntityException extends HttpException {
   constructor(messageArray: string[]) {

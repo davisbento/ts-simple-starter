@@ -1,3 +1,4 @@
+import UnauthorizedException from '@/exceptions/unauthorized';
 import { verifyToken } from '@/libs/jwt';
 import { NextFunction, Request, Response } from 'express';
 
@@ -11,7 +12,7 @@ export const authMiddleware = async (
     : '';
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    throw new UnauthorizedException('Unauthorized');
   }
 
   try {
@@ -23,6 +24,6 @@ export const authMiddleware = async (
 
     return next();
   } catch (err) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    throw new UnauthorizedException('Unauthorized');
   }
 };

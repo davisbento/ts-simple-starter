@@ -13,9 +13,13 @@ export const generateToken = (payload: JWTPayload) => {
 };
 
 export const verifyToken = (token: string) => {
-  const decoded = jwt.verify(token, constants.jwtSecret);
+  const decoded = jwt.verify(
+    token,
+    constants.jwtSecret
+    // just to override the sub type
+    // as the sub is string in the default jwt lib
+    // but we are using number
+  ) as unknown as JWTResponse;
 
-  return {
-    sub: (decoded as any).sub,
-  } as JWTResponse;
+  return decoded;
 };

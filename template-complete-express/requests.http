@@ -9,7 +9,7 @@ Content-type: application/json
 
 {
     "email": "test@test.com",
-    "password": "test123"
+    "password": "test1232121"
 }
 
 ###
@@ -22,9 +22,9 @@ Content-type: application/json
 }
 
 
-@authToken = {{login.response.body.token}}
 
 ###
+@authToken = {{login.response.body.token}}
 GET {{host}}/user/authenticated
 Content-type: application/json
 Authorization: Bearer {{authToken}}

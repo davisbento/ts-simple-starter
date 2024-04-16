@@ -26,19 +26,7 @@ const questions = [
 
 const currentPath = process.cwd();
 
-const generateProject = async (templatePath) => {
-	const projectName = process.argv[2];
-
-	if (!projectName) {
-		console.error('Please specify the project directory:');
-		console.log(`  npx ts-simple-starter ${chalk.green('<project-directory>')}`);
-		console.log();
-		console.log('For example:');
-		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
-		console.log();
-		process.exit(1);
-	}
-
+const generateProject = async (templatePath, projectName) => {
 	const startWithDot = projectName.startsWith('.');
 	const startWithSlash = projectName.startsWith('/');
 	const startWithTilde = projectName.startsWith('~');
@@ -122,12 +110,24 @@ const main = async () => {
 		process.exit(1);
 	}
 
+	const projectName = process.argv[2];
+
+	if (!projectName) {
+		console.error('Please specify the project directory:');
+		console.log(`  npx ts-simple-starter ${chalk.green('<project-directory>')}`);
+		console.log();
+		console.log('For example:');
+		console.log(`  npx ts-simple-starter ${chalk.green('my-app')}`);
+		console.log();
+		process.exit(1);
+	}
+
 	// Prompt the user with the defined questions
 	inquirer
 		.prompt(questions)
 		.then((answers) => {
 			const templatePath = getTemplatePathFromAnswers(answers);
-			generateProject(templatePath);
+			generateProject(templatePath, projectName);
 		})
 		.catch((error) => {
 			console.error('Error occurred:', error);
