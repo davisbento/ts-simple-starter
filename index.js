@@ -8,6 +8,7 @@ import path from 'path';
 import spawn from 'cross-spawn';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import { readFile } from 'fs/promises';
 
 const templateQuestion = {
 	'pure-ts': 'Pure TS',
@@ -24,9 +25,9 @@ const questions = [
 	}
 ];
 
-const currentPath = process.cwd();
-
 const generateProject = async (templatePath, projectName) => {
+	const currentPath = process.cwd();
+
 	const startWithDot = projectName.startsWith('.');
 	const startWithSlash = projectName.startsWith('/');
 	const startWithTilde = projectName.startsWith('~');
@@ -95,9 +96,8 @@ const main = async () => {
 	const args = process.argv.slice(2);
 
 	if (args.includes('--version') || args.includes('-v')) {
-		// read without require to avoid caching
-		const packageJson = fs.readFileSync(path.resolve(currentPath, 'package.json'), 'utf8');
-		console.log(JSON.parse(packageJson).version);
+		const packageJson = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
+		console.log(packageJson.version);
 		process.exit(1);
 	}
 
