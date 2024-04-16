@@ -1,22 +1,18 @@
-import { LoginPayload, LoginResponse } from '@/dto/user';
+import { LoginResponse } from '@/dto/user';
 import UnauthorizedException from '@/exceptions/unauthorized';
-import { comparePassword } from '@/libs/bcrypt';
+import { comparePassword } from '@/libs/password';
 import { generateToken } from '@/libs/jwt';
-import { prismaClient } from '@/libs/prisma';
+import { findUserByEmailRepository } from '@/repositories/user-repository';
 import { errorHandler } from '@/utils/error-handler';
-import { loginUserSchema } from '@/validators/user';
+import { LoginPayload, loginUserSchema } from '@/validators/user';
 
-export const loginUserService = async (
+export const loginUseCase = async (
   payload: LoginPayload
 ): Promise<LoginResponse> => {
   try {
     loginUserSchema.parse(payload);
 
-    const user = await prismaClient.user.findFirst({
-      where: {
-        email: payload.email,
-      },
-    });
+    const user = await findUserByEmailRepository(payload.email);
 
     if (!user) {
       throw new UnauthorizedException('Bad credentials');
@@ -31,7 +27,7 @@ export const loginUserService = async (
       throw new UnauthorizedException('Bad credentials');
     }
 
-    const token = generateToken({ userId: user.id });
+    const token = generateToken({ userId: user.id, role: user.role });
 
     return {
       token,

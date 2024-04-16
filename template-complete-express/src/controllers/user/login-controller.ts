@@ -1,4 +1,4 @@
-import { loginUserService } from '@/use-cases/user';
+import { loginUseCase } from '@/use-cases/user';
 import { NextFunction, Request, Response } from 'express';
 
 export const buildLoginController = async (
@@ -7,7 +7,7 @@ export const buildLoginController = async (
   next: NextFunction
 ) => {
   try {
-    const { token } = await loginUserService(req.body);
+    const { token } = await loginUseCase(req.body);
 
     res.json({
       token,

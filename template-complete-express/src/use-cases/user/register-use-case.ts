@@ -1,36 +1,32 @@
-import { LoginPayload } from '@/dto/user';
 import BadRequestException from '@/exceptions/bad-request';
-import { hashPassword } from '@/libs/bcrypt';
-import { prismaClient } from '@/libs/prisma';
+import { hashPassword } from '@/libs/password';
+import {
+  createUserRepository,
+  findUserByEmailRepository,
+} from '@/repositories/user-repository';
 import { errorHandler } from '@/utils/error-handler';
-import { createUserSchema } from '@/validators/user';
+import { CreateUserPayload, createUserSchema } from '@/validators/user';
 
-export const registerUserService = async (payload: LoginPayload) => {
+export const registerUseCase = async (payload: CreateUserPayload) => {
   try {
     createUserSchema.parse(payload);
 
-    const userExist = await prismaClient.user.findFirst({
-      where: {
-        email: payload.email,
-      },
-    });
+    const user = await findUserByEmailRepository(payload.email);
 
-    if (userExist) {
+    if (user) {
       throw new BadRequestException('User already exist');
     }
 
     const passwordHashed = await hashPassword(payload.password);
 
-    const user = await prismaClient.user.create({
-      data: {
-        email: payload.email,
-        password: passwordHashed,
-      },
+    const newUser = await createUserRepository({
+      email: payload.email,
+      password: passwordHashed,
     });
 
     return {
-      id: user.id,
-      email: user.email,
+      id: newUser.id,
+      email: newUser.email,
     };
   } catch (err) {
     errorHandler(err);

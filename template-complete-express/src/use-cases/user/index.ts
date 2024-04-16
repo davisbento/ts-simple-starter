@@ -1,2 +1,3 @@
-export { loginUserService } from './login-use-case';
-export { registerUserService } from './register-use-case';
+export { loginUseCase } from './login-use-case';
+export { registerUseCase } from './register-use-case';
+export { profileUseCase } from './profile-use-case';

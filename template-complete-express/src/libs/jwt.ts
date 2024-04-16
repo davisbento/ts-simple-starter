@@ -6,6 +6,7 @@ export const generateToken = (payload: JWTPayload) => {
   return jwt.sign(
     {
       sub: payload.userId,
+      role: payload.role,
     },
     constants.jwtSecret,
     { expiresIn: '7d' }
