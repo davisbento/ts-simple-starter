@@ -2,13 +2,11 @@
 
 // Usage: npx ts-simple-starter my-app
 
-import fs from 'fs';
-import path from 'path';
-
-import spawn from 'cross-spawn';
-import chalk from 'chalk';
-import inquirer from 'inquirer';
-import { readFile } from 'fs/promises';
+const spawn = require('cross-spawn');
+const chalk = require('chalk');
+const fs = require('fs');
+const path = require('path');
+const inquirer = require('inquirer');
 
 const templateQuestion = {
 	'pure-ts': 'Pure TS',
@@ -51,7 +49,8 @@ const generateProject = async (templatePath, projectName) => {
 
 	fs.mkdirSync(projectDir, { recursive: true });
 
-	fs.cpSync(`./${templatePath}`, projectDir, { recursive: true });
+	const templateDir = path.resolve(__dirname, templatePath);
+	fs.cpSync(templateDir, projectDir, { recursive: true });
 
 	// read the project's package.json without require
 	const projectPackageJson = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), 'utf8'));
@@ -67,6 +66,7 @@ const generateProject = async (templatePath, projectName) => {
 	// (Node has issues spawning child processes in Windows).
 	// enter the project directory
 	process.chdir(projectDir);
+
 	// emoji package is used to display emojis in the console.
 	console.log(`${chalk.green('Installing packages... 📦')}`);
 
@@ -95,8 +95,7 @@ const main = async () => {
 	const args = process.argv.slice(2);
 
 	if (args.includes('--version') || args.includes('-v')) {
-		const packageJson = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
-		console.log(packageJson.version);
+		console.log(require('./package.json').version);
 		process.exit(1);
 	}
 
