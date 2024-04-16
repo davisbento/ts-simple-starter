@@ -51,8 +51,7 @@ const generateProject = async (templatePath, projectName) => {
 
 	fs.mkdirSync(projectDir, { recursive: true });
 
-	const templateDir = path.resolve(currentPath, templatePath);
-	fs.cpSync(templateDir, projectDir, { recursive: true });
+	fs.cpSync(`./${templatePath}`, projectDir, { recursive: true });
 
 	// read the project's package.json without require
 	const projectPackageJson = JSON.parse(fs.readFileSync(path.join(projectDir, 'package.json'), 'utf8'));
